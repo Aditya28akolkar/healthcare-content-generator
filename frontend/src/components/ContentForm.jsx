@@ -1,6 +1,6 @@
 /**
  * ContentForm Component
- * UI upgraded — logic untouched
+ * Patient ID input added
  */
 
 import { useState, useEffect } from 'react'
@@ -55,10 +55,6 @@ function ContentForm({ onDocumentGenerated }) {
   const [patients, setPatients] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [showPatientForm, setShowPatientForm] = useState(false)
-  const [newPatientId, setNewPatientId] = useState('')
-  const [newPatientName, setNewPatientName] = useState('')
-  const [patientCreating, setPatientCreating] = useState(false)
 
   const selectedType = DOCUMENT_TYPES.find(t => t.type === documentType)
   const requiresPatient = selectedType?.requires_patient || false
@@ -135,7 +131,7 @@ function ContentForm({ onDocumentGenerated }) {
 
       <form onSubmit={handleSubmit} className="space-y-7">
 
-        {/* DOCUMENT TYPE CARDS */}
+        {/* DOCUMENT TYPE */}
         <div>
           <p className="text-sm font-medium text-gray-300 mb-3">
             Select Document Type
@@ -167,6 +163,27 @@ function ContentForm({ onDocumentGenerated }) {
             ))}
           </div>
         </div>
+
+        {/* PATIENT ID INPUT */}
+        {requiresPatient && (
+          <div>
+            <label className="text-sm text-gray-300 mb-2 block">
+              Patient ID
+            </label>
+
+            <input
+              type="text"
+              value={patientId}
+              onChange={(e) => setPatientId(e.target.value)}
+              placeholder="Enter Patient ID (e.g., P001)"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+
+            <p className="text-xs text-gray-500 mt-2">
+              Required for medical certificate generation
+            </p>
+          </div>
+        )}
 
         {/* DISEASE */}
         {requiresDisease && (
